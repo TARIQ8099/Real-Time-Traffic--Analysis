@@ -1,0 +1,53 @@
+Role: Act as a Computer Vision Researcher specializing in Intelligent Transport Systems (ITS).
+
+Objective: I need to build a "Real-Time Traffic Analytics" prototype in Google Colab. The Goal: Detect vehicles in a dashcam video and estimate their Speed (km/h) using computer vision. I want to demonstrate to a supervisor that I understand Perspective Transformation (mapping 2D pixels to 3D real-world coordinates), not just basic object detection.
+
+The Tech Stack:
+
+Model: ultralytics/yolov8n (Nano is fine for speed). this is for reference only. You can decide which model is best for this task. Yolov8 is old there are many updated models available. Also decide which version is better nano, medium, large or else one.
+
+Tracking: ByteTrack (integrated in YOLO).
+
+Library: supervision (by Roboflow) for handling the zones and annotations easily.
+
+Math: cv2.getPerspectiveTransform for the speed logic.
+
+Task 1: The Setup Write a script to:
+
+Install ultralytics and supervision.
+
+Download a sample 10-second "Highway Dashcam" video from a public URL (or allow me to upload highway.mp4).
+
+Task 2: The Mathematical Core (Speed Estimation) Instead of guessing, implement a Perspective Transform:
+
+Define 4 source points on the road (the "Source Polygon" - representing a lane segment).
+
+Define 4 destination points (the "Target Rect" - representing the real-world dimensions, e.g., 20 meters long).
+
+Compute the Homography Matrix.
+
+When a car travels through the zone, transform its coordinate movement into "Meters Traveled" and divide by time (FPS) to get Speed.
+
+Task 3: The Pipeline Write the processing loop:
+
+Detect car, truck, motorcycle.
+
+Track them across frames.
+
+If a track crosses the zone, calculate its speed.
+
+Anomaly Detection: If Speed > 100 km/h, draw a RED box and label it "SPEEDING".
+
+Task 4: The Visualization (The Dashboard) Use the supervision library to draw:
+
+The "Detection Zone" (Polygon) on the road.
+
+Labels on cars showing "{Speed} km/h".
+
+A corner counter: "Vehicles: X | Speeding Violations: Y".
+
+Constraints:
+
+The code must be modular.
+
+Add comments explaining the "Homography" part clearly so I can defend it in an interview.
